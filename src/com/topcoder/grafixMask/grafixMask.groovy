@@ -7,6 +7,7 @@ class grafixMask {
 		def rectangles = initializeRectangles()
 		
 		grid = initializeGridWithRectangles(grid, rectangles)
+		printGrid(grid)
 	}
 	
 	static boolean[][] initializeEmptyGrid(int ht, int wid) {
@@ -38,6 +39,19 @@ class grafixMask {
 			}
 		}
 		return grid
+	}
+	
+	static void printGrid(boolean[][] grid) {
+		for(int i = 0; i < grid.length; i++) {
+			for(int j = 0; j < grid[0].length; j++) {
+				if (grid[i][j] == true) {
+					print("1")
+				} else {
+					print("0")
+				}
+			}
+			println()
+		}
 	}
 	
 }
