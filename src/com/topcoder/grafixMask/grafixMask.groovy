@@ -3,11 +3,25 @@ import java.util.*
 
 class grafixMask {
 	public static void main(String[] args) {
-		def grid = initializeEmptyGrid(50, 50)
+		def grid = initializeEmptyGrid(500, 500)
 		def rectangles = initializeRectangles()
 		
 		grid = initializeGridWithRectangles(grid, rectangles)
 		printGrid(grid)
+		
+		int rectangleCount = 0
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				if (grid[i][j] == true) {
+					int thisRect = countRectangles(grid, i, j)
+					if (thisRect > 0) {
+					rectangleCount++
+					println("One rectangle of size: " + thisRect)
+					}
+				}
+			}
+		}
+		println("Final count: " + rectangleCount);
 	}
 	
 	static boolean[][] initializeEmptyGrid(int ht, int wid) {
@@ -25,7 +39,7 @@ class grafixMask {
 		rectangles[0] = new Rectangle(0,2,0,2)
 		rectangles[1] = new Rectangle(0,1,5,7)
 		rectangles[2] = new Rectangle(10,16,16,19)
-		rectangles[3] = new Rectangle(30,33,30,43)
+		rectangles[3] = new Rectangle(0,330,0,430)
 		
 		return rectangles
 	}
@@ -39,6 +53,22 @@ class grafixMask {
 			}
 		}
 		return grid
+	}
+	
+	static int countRectangles(boolean[][] grid, int i, int j) {
+		// Check to ensure that we are within the bounds of the grid, if not, return 0
+		if (i < 0 || i >= grid.length) return 0;
+	   // Similar check for y
+		if (j < 0 || j >= grid[i].length) return 0;
+		// Check if there's a rectangle at this position, and that we haven't already visited this position, as we don't want to count it twice
+		if (!grid[i][j]) return 0;
+		
+		grid[i][j] = false;
+		
+		// Now we know that we've found at least one node in a rectangle, then we will recursively attempt to
+		// visit every node adjacent to this node, and add those results together to return.
+		return 1 + countRectangles(grid, i - 1, j) + countRectangles(grid, i + 1, j) + countRectangles(grid, i, j + 1) + countRectangles(grid, i, j - 1);
+		
 	}
 	
 	static void printGrid(boolean[][] grid) {
